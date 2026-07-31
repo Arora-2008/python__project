@@ -6,7 +6,7 @@ USER_INFO={
 
     "interests":[
         "Artificial intelligence",
-        "Machine learning",
+        "MUachine learning",
         "cybersecurity",
         "python",
         "IOT"
