@@ -8,30 +8,27 @@ from datetime import datetime
 # ==========================================
 
 USER_INFO = {
-    "name": "Mahi ji",
+    "name": "Geetika",
     "age": None,
-    "profession": "Full-Stack Developer (Next.js)",
+    "profession": "student of B.TECH in ai&ml",
     "location": "Punjab, India",
-    "education": "M.Sc. IT (Final Year) | B.Sc. Non-Medical",
+    "education": "12th pass in non-medical",
     "interests": [
-        "Next.js", "React", "Backend Development", 
-        "AI", "Teaching Programming"
+        "IOT", "Cybersecurity", "Backend Development", 
+        "AI", "Machine learning"
     ],
     "expertise": [
-        "Next.js", "React.js", "Node.js", "Express.js",
-        "MongoDB", "JavaScript", "Python", "REST APIs", "Git"
+        "python","git"
     ],
     "personality_traits": [
-        "Fun-loving", "Problem Solver", "Patient Teacher",
+        "Fun-loving", "easily bored", "creative",
         "Tech Enthusiast", "Friendly"
     ],
     "background": """
-    Full-Stack Developer with 2+ years experience in Next.js and MERN stack.
-    Currently working as Website Programmer and Programming Instructor in Punjab.
-    Builds institute management systems, job platforms, and teaches coding.
-    Major projects include SkillUp Institute Website and AI Job Platform.
-    Loves teaching JavaScript, Python, and building scalable apps.
-    Always learning new tech and helping others grow.
+    I am a student who has recently completed her 12th grade in science stream with main
+    subjects physics,chemistry and maths. now I am going to persue b.tech in specialisation 
+    with artificial intelligence and machine learning. now I am learning python and git 
+    to enhance my skills.  
     """
 }
 
@@ -39,10 +36,10 @@ RESPONSE_STYLE = {
     "response_length": "medium-short",
     "use_emojis": True,
     "special_instructions": """
-    Punjabi-English mix ch medium-size, funny answers de.
-    Hasaa-mazaak kar par izzat naal.
-    Programming help ch practical example de ke samjha.
-    Maximum 8-10 lines ch jawab de.
+    give answer professionally with english as main language and punjabi .
+    give answer with full respect and fun.
+    give answer with examples in programming. 
+    give answer in maximum 5-8 lines.
     """
 }
 
@@ -50,15 +47,15 @@ class PersonalAIAssistant:
     def __init__(self, api_key):
         genai.configure(api_key=api_key)
         
+        "temperature"== 1.8,
         self.generation_config = {
-            "temperature": 1.8,
             "top_p": 0.95,
             "top_k": 40,
             "max_output_tokens": 500,
         }
         
         self.model = genai.GenerativeModel(
-            model_name="gemini-2.5-flash",
+            model_name="gemini-3.5-flash",
             generation_config=self.generation_config
         )
         
@@ -68,7 +65,7 @@ class PersonalAIAssistant:
         self.conversation_history = []
         self.system_prompt = self._create_system_prompt()
         
-        print("✅ Mahi ji ready aa! Gemini connect ho gaya ji!")
+        print("✅geetika are you ready to explore gemini!")
 
     @staticmethod
     def clear_terminal():
@@ -109,10 +106,10 @@ YOUR IDENTITY:
 CRITICAL RESPONSE RULES
 ==================================
 
-1. LANGUAGE: Always use Punjabi-English mix (60% Punjabi, 40% English)
+1. LANGUAGE: Always use Punjabi-English mix (20% Punjabi, 80% English)
 2. RESPECT: Use respectful terms - "Tusi", "Tuhanu", "Suno ji", "Dekho ji"
 3. NEVER use "tu" or "tum" - only "tusi/tuhanu"
-4. RESPONSE LENGTH: 5-10 lines maximum, complete but concise
+4. RESPONSE LENGTH: 5-8 lines maximum, complete but concise
 5. HUMOR: Smart, nerdy programming humor - witty like a developer, not silly
 6. VARIETY: Don't repeat the same phrases - be natural and spontaneous
 
@@ -149,7 +146,7 @@ TECHNICAL HELP GUIDELINES
 - Provide practical, real-world code examples
 - Connect concepts to everyday developer experiences
 - Keep explanations clear but not overly detailed
-- If unsure, say honestly "Ehde bare pura idea nahi, par..."
+- If unsure, say honestly "I don't have exact idea."
 - Always make the user feel they can learn it
 
 ==================================
@@ -164,7 +161,7 @@ DO NOT REPEAT THESE WORDS EXCESSIVELY
     def chat(self, user_message):
         try:
             if not self._check_quota():
-                return "Aj da quota muk gaya lagda! Kal fer gallan karange ji! 📊"
+                return "today's quota has been finished. will talk tommorow ! 📊"
 
             conversation_context = []
             for msg in self.conversation_history[-6:]:
@@ -190,7 +187,7 @@ Your response as {USER_INFO['name']}:"""
             response = chat_session.send_message(
                 full_prompt,
                 generation_config={
-                    "temperature": 1.2,
+                   "temperature": 1.2, 
                     "top_p": 0.95,
                     "max_output_tokens": 500,
                 }
@@ -214,23 +211,23 @@ Your response as {USER_INFO['name']}:"""
         except Exception as e:
             error = str(e)
             if "429" in error:
-                return "Google wale keh rahe ne 'thoda sabar rakho, VIP nahi ho tusi!' 😄 Thodi der ruk ke try karo ji."
+             return "Google guys are saying, 'Have some patience, you are not a VIP!' 😄 Wait a while and try."
             if "403" in error:
-                return "API key kuch naraz lagdi aa! Check karo je valid aa te permissions set ne."
+                return "it seems like there is some displeasure of API key . please check the settings."
             if "quota" in error.lower():
-                return "Free quota khatam ho gaya ji! Hun ya tan wait karo ya phir Google nu paise deo! 💸"
-            return f"Choti jehi technical glitch aa gayi, jaise 'undefined is not a function'! 😅\nError: {error[:100]}"
+                return "Your free quota has run out! Now, either you wait or pay Google! 💸"
+            return f"A minor technical glitch occurred'! 😅\nError: {error[:100]}"
 
     def reset_chat(self):
         self.conversation_history.clear()
         self.request_count = 0
-        return "Sab kuch reset! Fresh start, bilkul naye repo wali feeling! 🚀"
+        return "Everything reset! A fresh start—it feels just like a brand-new repo! 🚀"
 
 def show_banner():
     print("""
 ╔══════════════════════════════════════════════════════════════╗
-║                    🚀 MAHI JI - DEV ASSISTANT                ║
-║              Tuhada Personal AI Programming Buddy            ║
+║                    🚀 GEETIKA'S ASSISTANT                   ║
+║              YOUR Personal AI Programming Buddy              ║
 ╚══════════════════════════════════════════════════════════════╝
     """)
 
@@ -239,12 +236,12 @@ def show_help():
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
                      🎯 COMMANDS
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  /help     → Eh help menu fer dekhao
-  /info     → Mahi ji baare jaankari
-  /stats    → Ajj kitni gallan kitiyan
-  /reset    → Conversation restart karo
-  /clear    → Screen saaf karo
-  /exit     → Rabb rakha, fer milange!
+  /help     → please help me
+  /info     → give your info 
+  /stats    → how many talks did we do today 
+  /reset    → restart the conversation 
+  /clear    → clear the screen
+  /exit     → god bless . will meet soon!
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
     """)
 
@@ -255,10 +252,10 @@ def main():
     api_key = os.environ.get("GEMINI_API_KEY")
     
     if not api_key:
-        api_key = input("\n🔑 Gemini API Key pao ji: ").strip()
+        api_key = input("\n🔑Enter your Gemini API Key : ").strip()
 
     if not api_key:
-        print("\n❌ API key bina gallan nahi bananiyan! Key taan pao ji.")
+        print("\n❌ Don't just talk without the API!Enter API key .")
         return
 
     try:
@@ -266,7 +263,7 @@ def main():
         assistant.clear_terminal()
         show_banner()
         
-        print("\n💬 Gallan shuru karo! '/help' likho commands dekhan layi.\n")
+        print("\n💬 Get started! Type '/help' to view the commands.\n")
 
         while True:
             try:
@@ -276,7 +273,7 @@ def main():
                     continue
 
                 if user_input.lower() == "/exit":
-                    print(f"\n👋 Mahi ji: Rabb rakha ji! Fer milange! Code strong rakho! 🚀\n")
+                    print(f"\n👋 Geetika:we will meet again, keep the code strong 🚀\n")
                     break
 
                 elif user_input.lower() == "/help":
@@ -296,7 +293,7 @@ def main():
                 elif user_input.lower() == "/info":
                     print(f"""
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-              ℹ️  MAHI JI DI INFO
+              ℹ️  GEETIKA'S INFO 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
   Naam       : {USER_INFO['name']}
   Kaam       : {USER_INFO['profession']}
@@ -324,19 +321,19 @@ def main():
                     continue
 
                 reply = assistant.chat(user_input)
-                print(f"\n Mahi ji: {reply}\n")
+                print(f"\n Geetika: {reply}\n")
 
             except KeyboardInterrupt:
-                print(f"\n\n👋 Mahi ji: Chalo ji! Fer milange! Apna code debug karde raho! 😄🚀\n")
+                print(f"\n\n👋 Geetika :see you again. keep debugging your code! 😄🚀\n")
                 break
 
     except Exception as e:
-        print("\n❌ Oho! Kuch technical problem aa gayi:")
+        print("\n❌ some technical issue has occured :")
         print(str(e))
-        print("\n🔧 Eh cheeze check karo ji:")
-        print("  1. API key sahi payi aa?")
-        print("  2. Internet chalda paya?")
-        print("  3. pip install -U google-generativeai karke dekho")
+        print("\n🔧 please check this :")
+        print("  1. please enter correct API key ")
+        print("  2. Is Internet working ?")
+        print("  3. Please try pip install -U google-generativeai ")
 
 
 if __name__ == "__main__":
