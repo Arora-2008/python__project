@@ -1,7 +1,7 @@
-from flask import Flask as f
-
-app = f(__name__)
-
+from flask import Flask
+app=Flask(__name__)
 @app.route("/")
 def hello_world():
-    return "<p>Hello, World!</p>"
+    return "<input type='text' placeholder='Enter your name' />"
+if __name__ == "__main__ ":
+    app.run()
