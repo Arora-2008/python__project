@@ -49,7 +49,7 @@ def index():
 
 @app.route('/api/sum',methods=['POST'])
 def sum_numbers():
-    if not request.is__json:
+    if not request.is_json:
         return jsonify({"error": "Expected JSON body with 'a' and 'b'"}),400
     data=request.get__json()
     try:
