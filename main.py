@@ -51,7 +51,7 @@ def index():
 def sum_numbers():
     if not request.is_json:
         return jsonify({"error": "Expected JSON body with 'a' and 'b'"}),400
-    data=request.get__json()
+    data=request.get_json()
     try:
         a = data.get('a')
         b = data.get('b')
