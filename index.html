@@ -2,46 +2,53 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name=="viewpoint" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sum Calculator</title>
+    <link rel="stylesheet" href="./styles/index.css">
 </head>
 <body>
-    
+    <h2>Sum two numbers</h2>
+
+    <div class="hi">
+        <form id="sumForm">
+            <input id="a" type="number" step="any" placeholder="First number" required><br>
+            <input id="b" type="number" step="any" placeholder="Second number" required><br>
+            <button type="submit">Calculate</button>
+        </form>
+    </div>
 
     <h1 id="result">Result will appear here</h1>
 
-    </script>
+    <script>
         const form = document.getElementById('sumForm');
-        const resultE1 = document.getElementById('result');
+        const resultEl = document.getElementById('result');
 
-        <form.addEventListener('submit', e => {
+        form.addEventListener('submit', e => {
             e.preventDefault();
             const a = document.getElementById('a').value;
             const b = document.getElementById('b').value;
 
-            fetch('/api/sum',{
+            fetch('/api/sum', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json'},
-                body: JSON.stringify({a: a, b: b })
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ a: a, b: b })
             })
             .then(response => {
-            if (!response.ok) return response.json().then(err => { throw err; });
-            return response.json();
+                if (!response.ok) return response.json().then(err => { throw err; });
+                return response.json();
             })
             .then(data => {
                 if (data.sum !== undefined) {
-                    resultE1.textContent = 'Sum: ' + data.sum;
+                    resultEl.textContent = 'Sum: ' + data.sum;
                 } else {
-                    resultE1.textCcontent = 'Error: ' + (data.error || 'Unknown error');
+                    resultEl.textContent = 'Error: ' + (data.error || 'Unknown error');
                 }
             })
-        .catch(err => {
-            resultE1.textContent = 'Failed to calculate sum';
-            console.error('Error:',err);
+            .catch(err => {
+                resultEl.textContent = 'Failed to calculate sum';
+                console.error('Error:', err);
+            });
         });
-    });
-</scripts>
+    </script>
 </body>
 </html>
-        
