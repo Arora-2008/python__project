@@ -8,7 +8,7 @@ app = Flask(__name__)
 # #home
 @app.route("/")
 def index():
-    return send_from_directory('.','index.html')
+    return send_from_directory('.','chat.html')
 
 
 # #chat
