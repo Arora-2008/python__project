@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OmniAI Studio — Video AI</title>
+    <!-- Modern Typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-dark: #090b10;
+            --bg-card: rgba(20, 24, 36, 0.7);
+            --bg-sidebar: #0d1017;
+            --bg-input: rgba(18, 22, 32, 0.9);
+            
+            --accent-cyan: #06b6d4;
+            --accent-glow: rgba(6, 182, 212, 0.35);
+            --accent-purple: #8b5cf6;
+            --accent-pink: #ec4899;
+            --accent-emerald: #10b981;
+            
+            --border-light: rgba(255, 255, 255, 0.08);
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --text-dim: #64748b;
+            
+            --radius-main: 18px;
+            --radius-btn: 12px;
+            --shadow-glow: 0 10px 30px -10px rgba(6, 182, 212, 0.4);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            height: 100vh;
+            display: flex;
+            overflow: hidden;
+            background-image: 
+                radial-gradient(circle at 80% 80%, rgba(6, 182, 212, 0.12) 0%, transparent 45%),
+                radial-gradient(circle at 20% 20%, rgba(139, 92, 246, 0.1) 0%, transparent 45%);
+        }
+
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.15); border-radius: 10px; }
+
+        .app-container {
+            display: flex;
+            width: 100vw;
+            height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 270px;
+            background: var(--bg-sidebar);
+            border-right: 1px solid var(--border-light);
+            display: flex;
+            flex-direction: column;
+            padding: 24px 16px;
+            z-index: 10;
+        }
+
+        .brand-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 1.2rem;
+            font-weight: 800;
+            color: #fff;
+            margin-bottom: 32px;
+            padding-left: 8px;
+        }
+
+        .brand-icon {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: var(--shadow-glow);
+            font-size: 1.2rem;
+        }
+
+        .nav-section-title {
+            font-size: 0.72rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-dim);
+            margin: 16px 0 8px 10px;
+        }
+
+        .nav-menu {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 14px;
+            border-radius: var(--radius-btn);
+            color: var(--text-muted);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: all 0.25s ease;
+        }
+
+        .nav-item:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: #fff;
+        }
+
+        .nav-item.active {
+            background: linear-gradient(90deg, rgba(6, 182, 212, 0.2), rgba(6, 182, 212, 0.05));
+            border-left: 3px solid var(--accent-cyan);
+            color: #fff;
+        }
+
+        .nav-icon {
+            font-size: 1.1rem;
+        }
+
+        /* Workspace */
+        .main-workspace {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        .top-header {
+            height: 65px;
+            border-bottom: 1px solid var(--border-light);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 32px;
+            background: rgba(13, 16, 23, 0.6);
+            backdrop-filter: blur(12px);
+        }
+
+        .header-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        .content-body {
+            flex: 1;
+            padding: 32px;
+            overflow-y: auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+        }
+
+        @media (max-width: 960px) {
+            .content-body { grid-template-columns: 1fr; }
+        }
+
+        /* Card Panel */
+        .glass-panel {
+            background: var(--bg-card);
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius-main);
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            backdrop-filter: blur(16px);
+        }
+
+        .panel-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #fff;
+        }
+
+        /* Dropzone */
+        .dropzone {
+            border: 2px dashed rgba(6, 182, 212, 0.4);
+            border-radius: 14px;
+            padding: 28px 16px;
+            text-align: center;
+            background: rgba(6, 182, 212, 0.03);
+            cursor: pointer;
+            transition: all 0.25s ease;
+        }
+
+        .dropzone:hover {
+            border-color: var(--accent-cyan);
+            background: rgba(6, 182, 212, 0.08);
+        }
+
+        .dropzone-icon {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .dropzone-text {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+        }
+
+        .file-input {
+            display: none;
+        }
+
+        /* Player Box */
+        .video-box {
+            width: 100%;
+            height: 230px;
+            border-radius: 14px;
+            border: 1px solid var(--border-light);
+            overflow: hidden;
+            background: #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .video-player {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Form elements */
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .label {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-muted);
+        }
+
+        .text-input {
+            background: var(--bg-input);
+            border: 1px solid var(--border-light);
+            border-radius: 12px;
+            padding: 12px 16px;
+            color: #fff;
+            font-size: 0.95rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .text-input:focus {
+            border-color: var(--accent-cyan);
+        }
+
+        .action-btn {
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+            border: none;
+            color: white;
+            padding: 14px;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            box-shadow: var(--shadow-glow);
+            transition: transform 0.15s, opacity 0.2s;
+        }
+
+        .action-btn:hover {
+            opacity: 0.92;
+            transform: translateY(-1px);
+        }
+
+        /* Results Box */
+        .result-box {
+            background: rgba(10, 13, 20, 0.8);
+            border: 1px solid var(--border-light);
+            border-radius: 12px;
+            padding: 16px;
+            font-size: 0.92rem;
+            line-height: 1.6;
+            color: #e2e8f0;
+            white-space: pre-wrap;
+            min-height: 170px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="app-container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="brand-logo">
+            <div class="brand-icon">📹</div>
+            <span>OmniAI Studio</span>
+        </div>
+
+        <div class="nav-section-title">AI Workspaces</div>
+        <nav class="nav-menu">
+            <a href="/text" class="nav-item">
+                <span class="nav-icon">💬</span>
+                <span>Text Chat</span>
+            </a>
+            <a href="/photo" class="nav-item">
+                <span class="nav-icon">🖼️</span>
+                <span>Photo AI</span>
+            </a>
+            <a href="/video" class="nav-item active">
+                <span class="nav-icon">📹</span>
+                <span>Video AI</span>
+            </a>
+            <a href="/audio" class="nav-item">
+                <span class="nav-icon">🎙️</span>
+                <span>Audio AI</span>
+            </a>
+        </nav>
+    </aside>
+
+    <!-- Main Workspace -->
+    <main class="main-workspace">
+        <header class="top-header">
+            <div class="header-title">
+                <span>📹 Temporal Video AI Workspace</span>
+            </div>
+        </header>
+
+        <div class="content-body">
+            <!-- Upload & Input Form -->
+            <form class="glass-panel" id="videoForm">
+                <div class="panel-title">🎬 Upload & Analyze Video</div>
+
+                <div class="dropzone" id="dropzone" onclick="document.getElementById('fileInput').click()">
+                    <div class="dropzone-icon">📹</div>
+                    <div class="dropzone-text" id="dropzoneText">Click or Drag & Drop Video File Here</div>
+                    <span style="font-size: 0.75rem; color: var(--text-dim);">Supports MP4, WEBM, MOV, AVI</span>
+                    <input type="file" id="fileInput" class="file-input" accept="video/*">
+                </div>
+
+                <div class="form-group">
+                    <label class="label">Video Prompt / Specific Analysis Query</label>
+                    <input type="text" id="promptInput" class="text-input" value="Summarize key visual actions and scene timeline." placeholder="e.g. Detect key scenes, summarize audio speech...">
+                </div>
+
+                <button type="submit" class="action-btn" id="submitBtn">
+                    ⚡ Ingest & Analyze Video Stream
+                </button>
+            </form>
+
+            <!-- Video Player & Insights Panel -->
+            <div class="glass-panel">
+                <div class="panel-title">▶️ Video Stream Preview</div>
+
+                <div class="video-box">
+                    <video id="videoPlayer" class="video-player" controls src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4">
+                        Your browser does not support HTML5 video player.
+                    </video>
+                </div>
+
+                <div class="panel-title" style="font-size: 0.95rem; margin-top: 8px;">📑 Analysis & Temporal Insights</div>
+                <div class="result-box" id="resultReport">
+                    Select or upload a video file and click "Ingest & Analyze Video Stream" to view temporal results.
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+<script>
+    const videoForm = document.getElementById('videoForm');
+    const fileInput = document.getElementById('fileInput');
+    const dropzoneText = document.getElementById('dropzoneText');
+    const videoPlayer = document.getElementById('videoPlayer');
+    const promptInput = document.getElementById('promptInput');
+    const resultReport = document.getElementById('resultReport');
+    const submitBtn = document.getElementById('submitBtn');
+
+    fileInput.addEventListener('change', (e) => {
+        if (e.target.files && e.target.files[0]) {
+            const file = e.target.files[0];
+            dropzoneText.textContent = `Selected Video: ${file.name}`;
+            const fileURL = URL.createObjectURL(file);
+            videoPlayer.src = fileURL;
+        }
+    });
+
+    videoForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const formData = new FormData();
+        formData.append('prompt', promptInput.value.trim());
+
+        if (fileInput.files[0]) {
+            formData.append('file', fileInput.files[0]);
+        }
+
+        submitBtn.disabled = true;
+        resultReport.textContent = '⏳ Processing video frames, extracting audio tracks, and analyzing temporal dynamics...';
+
+        try {
+            const res = await fetch('/api/video', {
+                method: 'POST',
+                body: formData
+            });
+            const data = await res.json();
+
+            if (res.ok) {
+                resultReport.textContent = data.reply;
+                if (data.video_url && !fileInput.files[0]) {
+                    videoPlayer.src = data.video_url;
+                }
+            } else {
+                resultReport.textContent = '⚠️ Error: ' + (data.error || 'Failed to process video');
+            }
+        } catch (err) {
+            resultReport.textContent = '❌ Connection error contacting /api/video';
+        } finally {
+            submitBtn.disabled = false;
+        }
+    });
+</script>
+
+</body>
+</html>
