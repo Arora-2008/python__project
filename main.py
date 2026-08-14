@@ -1,8 +1,8 @@
 from flask import Flask
-from route import route
+from rroute import rroute
 
 app = Flask(__name__, template_folder="templates", static_folder="static")
-app.register_blueprint(route)
+app.register_blueprint(rroute)
 
 if __name__ == "__main__":
     print("🚀 Starting Server on http://127.0.0.1:5000")
