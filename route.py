@@ -5,7 +5,7 @@ from werkzeug.utils import secure_filename
 import importlib
 
 
-rroute = Blueprint("rroute", __name__, template_folder="templates")
+route = Blueprint("route", __name__, template_folder="templates")
 
 # Allowed extensions
 ALLOWED_IMAGE_EXTENSIONS = {"png", "jpg", "jpeg", "gif", "webp"}
@@ -21,26 +21,26 @@ def allowed_file(filename, allowed_set):
 # PAGE ROUTES (HTML Rendering)
 # ==========================================
 
-@rroute.route("/")
-@rroute.route("/text")
-@rroute.route("/chat")
+@route.route("/")
+@route.route("/text")
+@route.route("/chat")
 def text_chat_page():
     return render_template("text.html")
 
 
-@rroute.route("/photo")
-@rroute.route("/image")
+@route.route("/photo")
+@route.route("/image")
 def photo_chat_page():
     return render_template("photo.html")
 
 
-@rroute.route("/video")
+@route.route("/video")
 def video_chat_page():
     return render_template("video.html")
 
 
-@rroute.route("/audio")
-@rroute.route("/voice")
+@route.route("/audio")
+@route.route("/voice")
 def audio_chat_page():
     return render_template("audio.html")
 
@@ -50,7 +50,7 @@ def audio_chat_page():
 # API ENDPOINTS
 # ==========================================
 
-@rroute.route("/api/chat", methods=["POST"])
+@route.route("/api/chat", methods=["POST"])
 def api_text_chat():
     """Endpoint for Text Chat messaging."""
     try:
@@ -91,7 +91,7 @@ def api_text_chat():
         return jsonify({"error": f"An error occurred: {str(e)}"}), 500
 
 
-@rroute.route("/api/photo", methods=["POST"])
+@route.route("/api/photo", methods=["POST"])
 def api_photo_chat():
     """Endpoint for Photo/Image processing and visual QA."""
     try:
@@ -154,7 +154,7 @@ def api_photo_chat():
         return jsonify({"error": f"Failed to process photo: {str(e)}"}), 500
 
 
-@rroute.route("/api/video", methods=["POST"])
+@route.route("/api/video", methods=["POST"])
 def api_video_chat():
     """Endpoint for Video processing, transcription, and QA."""
     try:
@@ -216,7 +216,7 @@ def api_video_chat():
         return jsonify({"error": f"Failed to process video: {str(e)}"}), 500
 
 
-@rroute.route("/api/audio", methods=["POST"])
+@route.route("/api/audio", methods=["POST"])
 def api_audio_chat():
     """Endpoint for Audio processing, speech recognition, and sound synthesis."""
     try:
@@ -278,7 +278,7 @@ def api_audio_chat():
         return jsonify({"error": f"Failed to process audio: {str(e)}"}), 500
 
 
-@rroute.route("/api/tts", methods=["POST"])
+@route.route("/api/tts", methods=["POST"])
 def api_text_to_speech():
     """Endpoint for converting Text to Audio (Text-To-Speech) using gTTS."""
     try:
