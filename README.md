@@ -4,7 +4,7 @@ This project serves the multi-modal templates and exposes Python API endpoints f
 
 Quick start
 
-1. Create and activate a virtual environment (example for Windows PowerShell):
+1. Create and activate a virtual environment (example for Windows PowerShell)::
 
 ```powershell
 python -m venv myenv
